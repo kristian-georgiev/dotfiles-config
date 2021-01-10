@@ -121,6 +121,9 @@ set encoding=UTF-8
 au VimEnter *  NERDTree
 autocmd VimEnter * wincmd p
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+nnoremap <Leader>n :NERDTreeToggle<CR>
+nnoremap <Leader>f :NERDTreeFind<CR>
+
 
 " make SuperTab nicer
 let g:SuperTabDefaultCompletionType = "<c-n>"

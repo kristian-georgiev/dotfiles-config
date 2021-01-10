@@ -1,0 +1,14 @@
+- defaults:
+    link:
+      relink: true
+
+- clean: ['~']
+
+- link:
+    ~/.zshrc: zshrc
+    ~/.vimrc: vimrc
+    ~/.p10k.zsh: p10k.zsh
+    ~/.pylintrc: pylintrc
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
