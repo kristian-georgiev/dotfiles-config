@@ -146,5 +146,6 @@ zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
 
 export PATH=$PATH:/home/gridsan/krisgrg/superurop/util/executables
+export PATH=$PATH:/home/gridsan/krisgrg/.local/bin
 export WANDB_MODE=dryrun
 export HOST=$(hostname)

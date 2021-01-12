@@ -7,6 +7,8 @@
 - link:
     ~/.zshrc: zshrc
     ~/.vimrc: vimrc
+    ~/.tmux.conf: tmux.conf
+    ~/.tmux.conf.local: tmux.conf.local
     ~/.p10k.zsh: p10k.zsh
     ~/.pylintrc: pylintrc
 
