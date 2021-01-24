@@ -1,23 +1,14 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/gridsan/krisgrg/.oh-my-zsh"
+export ZSH="/Users/kristiangeorgiev/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-# ZSH_THEME="robbyrussell"
-ZSH_THEME="powerlevel10k/powerlevel10k"
+ZSH_THEME="robbyrussell"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -77,7 +68,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git z zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(git z zsh-autosuggestions zsh-syntax-highlighting zsh-interactive-cd)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -107,45 +98,29 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias gs="git status"
-alias gl="git log --all --graph --decorate"
-alias lls="LLstat"
-alias llk="LLkill"
-alias lli="LLsub -i -s 40 -g volta:1"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+alias python="python3"
+alias pytohn="python3"
+alias pythno="python3"
+alias etc="sudo vim /etc/hosts"
+if [ -h '/usr/local/bin/vim' ]; then
+    alias vim='/usr/local/bin/vim'
+fi
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/state/partition1/llgrid/pkg/anaconda/anaconda3-2019b/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/Users/kristiangeorgiev/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/state/partition1/llgrid/pkg/anaconda/anaconda3-2019b/etc/profile.d/conda.sh" ]; then
-        . "/state/partition1/llgrid/pkg/anaconda/anaconda3-2019b/etc/profile.d/conda.sh"
+    if [ -f "/Users/kristiangeorgiev/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/kristiangeorgiev/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/state/partition1/llgrid/pkg/anaconda/anaconda3-2019b/bin:$PATH"
+        export PATH="/Users/kristiangeorgiev/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-# This speeds up pasting w/ autosuggest
-# https://github.com/zsh-users/zsh-autosuggestions/issues/238
-pasteinit() {
-  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
-  zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
-}
 
-pastefinish() {
-  zle -N self-insert $OLD_SELF_INSERT
-}
-zstyle :bracketed-paste-magic paste-init pasteinit
-zstyle :bracketed-paste-magic paste-finish pastefinish
 
-export PATH=$PATH:/home/gridsan/krisgrg/superurop/util/executables
-export PATH=$PATH:/home/gridsan/krisgrg/.local/bin
-export WANDB_MODE=dryrun
-export HOST=$(hostname)
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
