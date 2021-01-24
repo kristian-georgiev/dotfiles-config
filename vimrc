@@ -209,6 +209,9 @@ Plug 'ervandew/supertab'
 Plug 'dense-analysis/ale'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'sjl/gundo.vim'
+Plug 'wincent/ferret'
+Plug 'davidhalter/jedi-vim'
+Plug 'vim-scripts/AutoComplPop'
 call plug#end()
 
 " gundo mappings
