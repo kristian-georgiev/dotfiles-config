@@ -11,6 +11,7 @@
     ~/.tmux.conf.local: tmux.conf.local
     ~/.p10k.zsh: p10k.zsh
     ~/.pylintrc: pylintrc
+    ~/.gitconfig: gitconfig
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
