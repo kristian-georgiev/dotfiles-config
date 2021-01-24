@@ -182,9 +182,6 @@ au VimEnter *  NERDTree
 autocmd VimEnter * wincmd p
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-nnoremap <Leader>n :NERDTreeToggle<CR>
-nnoremap <Leader>f :NERDTreeFind<CR>
-
 
 " make SuperTab nicer
 let g:SuperTabDefaultCompletionType = "<c-n>"
@@ -208,14 +205,18 @@ Plug 'tpope/vim-obsession'
 Plug 'ervandew/supertab'
 Plug 'dense-analysis/ale'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'sjl/gundo.vim'
+Plug 'mbbill/undotree'
 Plug 'wincent/ferret'
 Plug 'davidhalter/jedi-vim'
 Plug 'vim-scripts/AutoComplPop'
 call plug#end()
 
-" gundo mappings
-nnoremap <F5> :GundoToggle<CR>
+" undotree mappings
+nnoremap <F5> :UndotreeToggle<CR>
+
+
+nnoremap <Leader>n :NERDTreeToggle<CR>
+nnoremap <Leader>f :NERDTreeFind<CR>
 
 
 " Linting
