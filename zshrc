@@ -111,6 +111,12 @@ alias gl="git log --all --graph --decorate"
 alias lls="LLstat"
 alias llk="LLkill"
 alias lli="LLsub -i -s 40 -g volta:1"
+function ta {
+    tmux a -t "$1"
+    }
+function tn {
+    tmux new -a "$1"
+    }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
