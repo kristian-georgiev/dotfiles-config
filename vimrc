@@ -116,13 +116,71 @@ set smartindent
 
 set splitbelow
 
+" saving and loading sessions
+" from https://dockyard.com/blog/2018/06/01/simple-vim-session-management-part-1
+set wildmenu
+set wildmode=full
+let g:session_dir = '~/vim-sessions'
+exec 'nnoremap <Leader>ss :Obsession ' . g:session_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
+" pause session
+nnoremap <Leader>sp :Obsession<CR>
+
+" Our custom TabLine function
+function MyTabLine()
+  let s = ''
+  for i in range(tabpagenr('$'))
+    " select the highlighting
+    if i + 1 == tabpagenr()
+      let s .= '%#TabLineSel#'
+    else
+      let s .= '%#TabLine#'
+    endif
+
+    " set the tab page number (for mouse clicks)
+    let s .= '%' . (i + 1) . 'T'
+
+    " the label is made by MyTabLabel()
+    let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
+  endfor
+
+  " after the last tab fill with TabLineFill and reset tab page nr
+  let s .= '%#TabLineFill#%T'
+
+    let s .= '%=' " Right-align after this
+
+    if exists('g:this_obsession')
+        let s .= '%#diffadd#' " Use the "DiffAdd" color if in a session
+    endif
+
+    " add vim-obsession status if available
+    if exists(':Obsession')
+        let s .= "%{ObsessionStatus()}"
+        if exists('v:this_session') && v:this_session != ''
+            let s:obsession_string = v:this_session
+            let s:obsession_parts = split(s:obsession_string, '/')
+            let s:obsession_filename = s:obsession_parts[-1]
+            let s .= ' ' . s:obsession_filename . ' '
+            let s .= '%*' " Restore default color
+        endif
+    endif
+
+  return s
+endfunction
+
+" Required for MyTabLine()
+function MyTabLabel(n)
+  let buflist = tabpagebuflist(a:n)
+  let winnr = tabpagewinnr(a:n)
+  return bufname(buflist[winnr - 1])
+endfunction
+
+
 " Stuff for making NERDTree behave nicer
 set encoding=UTF-8
 au VimEnter *  NERDTree
 autocmd VimEnter * wincmd p
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-nnoremap <Leader>n :NERDTreeToggle<CR>
-nnoremap <Leader>f :NERDTreeFind<CR>
 
 
 " make SuperTab nicer
@@ -130,38 +188,57 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
 let g:SuperTabCrMapping = 1
 
+" Enable completion where available.
+let g:ale_completion_enabled = 1
+
+" ctrlp.vim basic settings
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+
 call plug#begin('~/.vim/plugged')
 Plug 'preservim/nerdcommenter'
 Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-obsession'
+Plug 'ervandew/supertab'
+Plug 'dense-analysis/ale'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'mbbill/undotree'
+Plug 'wincent/ferret'
 Plug 'davidhalter/jedi-vim'
 Plug 'vim-scripts/AutoComplPop'
-Plug 'ervandew/supertab'
-Plug 'neomake/neomake'
 call plug#end()
+
+" undotree mappings
+nnoremap <F5> :UndotreeToggle<CR>
+
+
+nnoremap <Leader>n :NERDTreeToggle<CR>
+nnoremap <Leader>f :NERDTreeFind<CR>
+
 
 " Linting
 
 " When writing a buffer (no delay).
-call neomake#configure#automake('w')
+"call neomake#configure#automake('w')
 " When writing a buffer (no delay), and on normal mode changes (after 750ms).
-call neomake#configure#automake('nw', 750)
+"call neomake#configure#automake('nw', 750)
 " When reading a buffer (after 1s), and when writing (no delay).
-call neomake#configure#automake('rw', 1000)
+"call neomake#configure#automake('rw', 1000)
 " Full config: when writing or reading a buffer, and on changes in insert and
 " normal mode (after 500ms; no delay when writing).
-call neomake#configure#automake('nrwi', 500)
+"call neomake#configure#automake('nrwi', 500)
 
 " which linter to enable for Python source file linting
-let g:neomake_python_pylint_maker = {
-  \ 'args': [
-  \ '-d', 'C0103, C0111',
-  \ '-f', 'text',
-  \ '--msg-template="{path}:{line}:{column}:{C}: [{symbol}] {msg}"',
-  \ '-r', 'n'
-  \ ],
-  \ }
+"let g:neomake_python_pylint_maker = {
+  "\ 'args': [
+  "\ '-d', 'C0103, C0111',
+  "\ '-f', 'text',
+  "\ '--msg-template="{path}:{line}:{column}:{C}: [{symbol}] {msg}"',
+  "\ '-r', 'n'
+  "\ ],
+  "\ }
 
-let g:neomake_python_enabled_makers = ['pylint']
+"let g:neomake_python_enabled_makers = ['pylint']
