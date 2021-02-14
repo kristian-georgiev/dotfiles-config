@@ -1,3 +1,17 @@
+HOSTNAME="$(hostname)"  # Conda clobbers HOST, so we save the real hostname into another variable.
+
+precmd() {
+    OLDHOST="${HOST}"
+    HOST="${HOSTNAME}"
+}
+
+preexec() {
+    HOST="${OLDHOST}"
+}
+
+precmd
+preexec
+
 alias lls="LLstat"
 alias llk="LLkill"
 alias lli="LLsub -i -s 40 -g volta:1"

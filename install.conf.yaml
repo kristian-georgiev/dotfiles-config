@@ -12,6 +12,7 @@
     ~/.p10k.zsh: p10k.zsh
     ~/.pylintrc: pylintrc
     ~/.gitconfig: gitconfig
+    ~/.bashrc_supercloud: local/bashrc_supercloud
     ~/.zshrc_supercloud: local/zshrc_supercloud
     ~/.zshrc_thinkpad: local/zshrc_thinkpad
 
