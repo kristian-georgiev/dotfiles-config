@@ -126,54 +126,56 @@ exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS
 " pause session
 nnoremap <Leader>sp :Obsession<CR>
 
-" Our custom TabLine function
-function MyTabLine()
-  let s = ''
-  for i in range(tabpagenr('$'))
-    " select the highlighting
-    if i + 1 == tabpagenr()
-      let s .= '%#TabLineSel#'
-    else
-      let s .= '%#TabLine#'
-    endif
-
-    " set the tab page number (for mouse clicks)
-    let s .= '%' . (i + 1) . 'T'
-
-    " the label is made by MyTabLabel()
-    let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
-  endfor
-
-  " after the last tab fill with TabLineFill and reset tab page nr
-  let s .= '%#TabLineFill#%T'
-
-    let s .= '%=' " Right-align after this
-
-    if exists('g:this_obsession')
-        let s .= '%#diffadd#' " Use the "DiffAdd" color if in a session
-    endif
-
-    " add vim-obsession status if available
-    if exists(':Obsession')
-        let s .= "%{ObsessionStatus()}"
-        if exists('v:this_session') && v:this_session != ''
-            let s:obsession_string = v:this_session
-            let s:obsession_parts = split(s:obsession_string, '/')
-            let s:obsession_filename = s:obsession_parts[-1]
-            let s .= ' ' . s:obsession_filename . ' '
-            let s .= '%*' " Restore default color
+if !exists("*MyTabLine")
+    " Our custom TabLine function
+    function MyTabLine()
+      let s = ''
+      for i in range(tabpagenr('$'))
+        " select the highlighting
+        if i + 1 == tabpagenr()
+          let s .= '%#TabLineSel#'
+        else
+          let s .= '%#TabLine#'
         endif
-    endif
 
-  return s
-endfunction
+        " set the tab page number (for mouse clicks)
+        let s .= '%' . (i + 1) . 'T'
 
-" Required for MyTabLine()
-function MyTabLabel(n)
-  let buflist = tabpagebuflist(a:n)
-  let winnr = tabpagewinnr(a:n)
-  return bufname(buflist[winnr - 1])
-endfunction
+        " the label is made by MyTabLabel()
+        let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
+      endfor
+
+      " after the last tab fill with TabLineFill and reset tab page nr
+      let s .= '%#TabLineFill#%T'
+
+        let s .= '%=' " Right-align after this
+
+        if exists('g:this_obsession')
+            let s .= '%#diffadd#' " Use the "DiffAdd" color if in a session
+        endif
+
+        " add vim-obsession status if available
+        if exists(':Obsession')
+            let s .= "%{ObsessionStatus()}"
+            if exists('v:this_session') && v:this_session != ''
+                let s:obsession_string = v:this_session
+                let s:obsession_parts = split(s:obsession_string, '/')
+                let s:obsession_filename = s:obsession_parts[-1]
+                let s .= ' ' . s:obsession_filename . ' '
+                let s .= '%*' " Restore default color
+            endif
+        endif
+
+      return s
+    endfunction
+
+    " Required for MyTabLine()
+    function MyTabLabel(n)
+      let buflist = tabpagebuflist(a:n)
+      let winnr = tabpagewinnr(a:n)
+      return bufname(buflist[winnr - 1])
+    endfunction
+endif
 
 
 " Stuff for making NERDTree behave nicer
@@ -191,6 +193,9 @@ let g:SuperTabCrMapping = 1
 " Enable completion where available.
 let g:ale_completion_enabled = 1
 
+" nicer linter message
+let g:ale_echo_msg_format = '%linter% says %s'
+
 " ctrlp.vim basic settings
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
@@ -201,6 +206,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
 Plug 'tpope/vim-obsession'
 Plug 'ervandew/supertab'
 Plug 'dense-analysis/ale'
@@ -209,15 +215,21 @@ Plug 'mbbill/undotree'
 Plug 'wincent/ferret'
 Plug 'davidhalter/jedi-vim'
 Plug 'vim-scripts/AutoComplPop'
+Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 " undotree mappings
 nnoremap <F5> :UndotreeToggle<CR>
 
 
-nnoremap <Leader>n :NERDTreeToggle<CR>
+nnoremap <Leader>m :NERDTreeToggle<CR>
 nnoremap <Leader>f :NERDTreeFind<CR>
 
+" Folding
+set foldmethod=indent
+set foldnestmax=2
+nnoremap <space> za
+vnoremap <space> zf
 
 " Linting
 
@@ -242,3 +254,27 @@ nnoremap <Leader>f :NERDTreeFind<CR>
   "\ }
 
 "let g:neomake_python_enabled_makers = ['pylint']
+
+if &term =~ '^xterm'
+	" Cursor in terminal:
+	" Link: https://vim.fandom.com/wiki/Configuring_the_cursor
+	" 0 -> blinking block not working in wsl
+	" 1 -> blinking block
+	" 2 -> solid block
+	" 3 -> blinking underscore
+	" 4 -> solid underscore
+	" Recent versions of xterm (282 or above) also support
+	" 5 -> blinking vertical bar
+	" 6 -> solid vertical bar
+
+	" normal mode
+	let &t_EI .= "\e[1 q" 	
+	" insert mode
+	let &t_SI .= "\e[5 q"	
+
+	augroup windows_term
+		autocmd!
+		autocmd VimEnter * silent !echo -ne "\e[1 q" 
+		autocmd VimLeave * silent !echo -ne "\e[5 q" 
+	augroup END
+endif
