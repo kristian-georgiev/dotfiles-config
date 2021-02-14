@@ -62,3 +62,11 @@ pastefinish() {
 }
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
+
+if [ -f ~/.zshrc_supercloud ]; then
+    source ~/.zshrc_supercloud
+fi
+
+if [ -f ~/.zshrc_thinkpad ]; then
+    source ~/.zshrc_thinkpad
+fi

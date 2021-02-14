@@ -12,6 +12,8 @@
     ~/.p10k.zsh: p10k.zsh
     ~/.pylintrc: pylintrc
     ~/.gitconfig: gitconfig
+    ~/.zshrc_supercloud: local/zshrc_supercloud
+    ~/.zshrc_thinkpad: local/zshrc_thinkpad
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]

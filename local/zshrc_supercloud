@@ -1,0 +1,19 @@
+alias lls="LLstat"
+alias llk="LLkill"
+alias lli="LLsub -i -s 40 -g volta:1"
+function ta {
+    tmux a -t "$1"
+    }
+function tn {
+    tmux new -a "$1"
+    }
+
+export PATH=$PATH:/home/gridsan/krisgrg/superurop/util/executables
+export PATH=$PATH:/home/gridsan/krisgrg/.local/bin
+export HOST=$(hostname)
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/gridsan/krisgrg/.mujoco/mjpro150/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/gridsan/krisgrg/.mujoco/mujoco200/bin
+
+# no connection on compute nodes, so using weights and biases asynchronously
+export WANDB_MODE=dryrun
