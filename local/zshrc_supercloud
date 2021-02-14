@@ -17,3 +17,19 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/gridsan/krisgrg/.mujoco/mujoco200/
 
 # no connection on compute nodes, so using weights and biases asynchronously
 export WANDB_MODE=dryrun
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/state/partition1/llgrid/pkg/anaconda/anaconda3-2020b/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/state/partition1/llgrid/pkg/anaconda/anaconda3-2020b/etc/profile.d/conda.sh" ]; then
+        . "/state/partition1/llgrid/pkg/anaconda/anaconda3-2020b/etc/profile.d/conda.sh"
+    else
+        export PATH="/state/partition1/llgrid/pkg/anaconda/anaconda3-2020b/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
