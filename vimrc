@@ -99,8 +99,6 @@ map + <C-W>+
 nmap j gj
 nmap k gk
 
-colorscheme iceberg
-set background=dark
 
 syntax enable
 filetype plugin indent on
@@ -196,6 +194,7 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 
 call plug#begin('~/.vim/plugged')
+Plug 'cocopon/iceberg.vim'
 Plug 'preservim/nerdcommenter'
 Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
@@ -211,6 +210,9 @@ Plug 'davidhalter/jedi-vim'
 Plug 'vim-scripts/AutoComplPop'
 call plug#end()
 
+colorscheme iceberg
+set background=dark
+
 " undotree mappings
 nnoremap <F5> :UndotreeToggle<CR>
 
@@ -219,26 +221,29 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 nnoremap <Leader>f :NERDTreeFind<CR>
 
 
-" Linting
 
-" When writing a buffer (no delay).
-"call neomake#configure#automake('w')
-" When writing a buffer (no delay), and on normal mode changes (after 750ms).
-"call neomake#configure#automake('nw', 750)
-" When reading a buffer (after 1s), and when writing (no delay).
-"call neomake#configure#automake('rw', 1000)
-" Full config: when writing or reading a buffer, and on changes in insert and
-" normal mode (after 500ms; no delay when writing).
-"call neomake#configure#automake('nrwi', 500)
+" because Windows Terminal is silly
+" https://github.com/microsoft/terminal/issues/4335#issuecomment-753397798
+if &term =~ '^xterm'
+	" Cursor in terminal:
+	" Link: https://vim.fandom.com/wiki/Configuring_the_cursor
+	" 0 -> blinking block not working in wsl
+	" 1 -> blinking block
+	" 2 -> solid block
+	" 3 -> blinking underscore
+	" 4 -> solid underscore
+	" Recent versions of xterm (282 or above) also support
+	" 5 -> blinking vertical bar
+	" 6 -> solid vertical bar
 
-" which linter to enable for Python source file linting
-"let g:neomake_python_pylint_maker = {
-  "\ 'args': [
-  "\ '-d', 'C0103, C0111',
-  "\ '-f', 'text',
-  "\ '--msg-template="{path}:{line}:{column}:{C}: [{symbol}] {msg}"',
-  "\ '-r', 'n'
-  "\ ],
-  "\ }
+	" normal mode
+	let &t_EI .= "\e[1 q" 	
+	" insert mode
+	let &t_SI .= "\e[5 q"	
 
-"let g:neomake_python_enabled_makers = ['pylint']
+	augroup windows_term
+		autocmd!
+		autocmd VimEnter * silent !echo -ne "\e[1 q" 
+		autocmd VimLeave * silent !echo -ne "\e[5 q" 
+	augroup END
+endif
