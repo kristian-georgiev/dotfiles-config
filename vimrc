@@ -215,6 +215,7 @@ Plug 'wincent/ferret'
 Plug 'davidhalter/jedi-vim'
 Plug 'vim-scripts/AutoComplPop'
 Plug 'airblade/vim-gitgutter'
+Plug 'yggdroot/indentline'
 call plug#end()
 
 colorscheme iceberg
@@ -230,6 +231,8 @@ nnoremap <Leader>f :NERDTreeFind<CR>
 " Folding
 set foldmethod=indent
 set foldnestmax=2
+" Start unfolded
+set foldlevel=99
 nnoremap <space> za
 vnoremap <space> zf
 
