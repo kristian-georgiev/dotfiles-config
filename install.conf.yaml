@@ -14,6 +14,7 @@
     ~/.gitconfig: gitconfig
     ~/.bashrc_supercloud: local/bashrc_supercloud
     ~/.zshrc_supercloud: local/zshrc_supercloud
+    ~/.zshrc_mslurm: local/zshrc_mslurm
     ~/.zshrc_thinkpad: local/zshrc_thinkpad
 
 - shell:

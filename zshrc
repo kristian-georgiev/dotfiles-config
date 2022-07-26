@@ -1,8 +1,13 @@
+echo "Hi from /mnt/cfs/home/krisgrg/.zshrc"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+if [ -f ~/.zshrc_mslurm ]; then
+    source ~/.zshrc_mslurm
 fi
 
 # If you come from bash you might have to change your $PATH.
@@ -35,6 +40,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
+
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 plugins=(git z zsh-syntax-highlighting zsh-autosuggestions)
@@ -44,6 +50,10 @@ source $ZSH/oh-my-zsh.sh
 # Set personal aliases, for a full list of active aliases, run `alias`.
 alias gs="git status"
 alias gl="git log --all --graph --decorate"
+alias py="python"
+alias pytohn="python"
+alias ypthon="python"
+alias yptohn="python"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -63,10 +73,19 @@ pastefinish() {
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
 
-if [ -f ~/.zshrc_supercloud ]; then
-    source ~/.zshrc_supercloud
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/mnt/cfs/programs/conda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/mnt/cfs/programs/conda/etc/profile.d/conda.sh" ]; then
+        . "/mnt/cfs/programs/conda/etc/profile.d/conda.sh"
+    else
+        export PATH="/mnt/cfs/programs/conda/bin:$PATH"
+    fi
 fi
+unset __conda_setup
+# <<< conda initialize <<<
 
-if [ -f ~/.zshrc_thinkpad ]; then
-    source ~/.zshrc_thinkpad
-fi
+export PATH="$HOME/.poetry/bin:$PATH"

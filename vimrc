@@ -23,6 +23,12 @@ set shortmess+=I
 " Show line numbers.
 set number
 
+" Hard line-wrapping
+set textwidth=80
+set wrapmargin=0
+set formatoptions+=t
+set linebreak
+
 " This enables relative line numbering mode. With both number and
 " relativenumber enabled, the current line shows the true line number, while
 " all other lines (above and below) are numbered relative to the current line.
@@ -80,11 +86,6 @@ nnoremap <Left>  :echoe "Use h"<CR>
 nnoremap <Right> :echoe "Use l"<CR>
 nnoremap <Up>    :echoe "Use k"<CR>
 nnoremap <Down>  :echoe "Use j"<CR>
-" ...and in insert mode
-inoremap <Left>  <ESC>:echoe "Use h"<CR>
-inoremap <Right> <ESC>:echoe "Use l"<CR>
-inoremap <Up>    <ESC>:echoe "Use k"<CR>
-inoremap <Down>  <ESC>:echoe "Use j"<CR>
 
 " Remap split navigation
 nnoremap <leader>j :wincmd j<CR>
@@ -188,12 +189,6 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
 let g:SuperTabCrMapping = 1
 
-" Enable completion where available.
-let g:ale_completion_enabled = 1
-
-" nicer linter message
-let g:ale_echo_msg_format = '%linter% says %s'
-
 " ctrlp.vim basic settings
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
@@ -207,8 +202,8 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-rhubarb'
 Plug 'ervandew/supertab'
-Plug 'dense-analysis/ale'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'mbbill/undotree'
 Plug 'wincent/ferret'

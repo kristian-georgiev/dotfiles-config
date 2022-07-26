@@ -1,0 +1,19 @@
+#source /etc/profile.d/modules.sh
+#module load conda
+#module load mslurm
+
+alias sq='squeue --format="%.9i %22j %8u %8T %.7M %.13l %6D %20R %C %b"'
+alias sqk="squeue -u krisgrg"
+alias sm="slurm-smi"
+
+export CONDA_ENVS_PATH="/mnt/cfs/home/krisgrg/conda_envs"
+
+# hacky script by G to switch home directory to $HOME
+LD_PRELOAD=/mnt/nfs/programs/fakegetent/libfakehome.so
+
+# a script by Eric to give aggregate nvidia-smi-like 
+# monitoring for the entire cluster
+PATH=/mnt/nfs/home/wongeric/slurm-smi/versions:$PATH
+HOME=/mnt/cfs/home/krisgrg
+
+cd ~
