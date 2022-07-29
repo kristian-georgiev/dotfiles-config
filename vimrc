@@ -215,7 +215,7 @@ call plug#end()
 nnoremap <F5> :UndotreeToggle<CR>
 
 
-nnoremap <Leader>n :NERDTreeToggle<CR>
+nnoremap <Leader>m :NERDTreeToggle<CR>
 nnoremap <Leader>f :NERDTreeFind<CR>
 
 
