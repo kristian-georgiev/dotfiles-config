@@ -23,6 +23,12 @@ set shortmess+=I
 " Show line numbers.
 set number
 
+" Hard line-wrapping
+set textwidth=80
+set wrapmargin=0
+set formatoptions+=t
+set linebreak
+
 " This enables relative line numbering mode. With both number and
 " relativenumber enabled, the current line shows the true line number, while
 " all other lines (above and below) are numbered relative to the current line.
@@ -80,11 +86,6 @@ nnoremap <Left>  :echoe "Use h"<CR>
 nnoremap <Right> :echoe "Use l"<CR>
 nnoremap <Up>    :echoe "Use k"<CR>
 nnoremap <Down>  :echoe "Use j"<CR>
-" ...and in insert mode
-inoremap <Left>  <ESC>:echoe "Use h"<CR>
-inoremap <Right> <ESC>:echoe "Use l"<CR>
-inoremap <Up>    <ESC>:echoe "Use k"<CR>
-inoremap <Down>  <ESC>:echoe "Use j"<CR>
 
 " Remap split navigation
 nnoremap <leader>j :wincmd j<CR>
@@ -99,8 +100,6 @@ map + <C-W>+
 nmap j gj
 nmap k gk
 
-colorscheme iceberg
-set background=dark
 
 syntax enable
 filetype plugin indent on
@@ -126,54 +125,56 @@ exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS
 " pause session
 nnoremap <Leader>sp :Obsession<CR>
 
-" Our custom TabLine function
-function MyTabLine()
-  let s = ''
-  for i in range(tabpagenr('$'))
-    " select the highlighting
-    if i + 1 == tabpagenr()
-      let s .= '%#TabLineSel#'
-    else
-      let s .= '%#TabLine#'
-    endif
-
-    " set the tab page number (for mouse clicks)
-    let s .= '%' . (i + 1) . 'T'
-
-    " the label is made by MyTabLabel()
-    let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
-  endfor
-
-  " after the last tab fill with TabLineFill and reset tab page nr
-  let s .= '%#TabLineFill#%T'
-
-    let s .= '%=' " Right-align after this
-
-    if exists('g:this_obsession')
-        let s .= '%#diffadd#' " Use the "DiffAdd" color if in a session
-    endif
-
-    " add vim-obsession status if available
-    if exists(':Obsession')
-        let s .= "%{ObsessionStatus()}"
-        if exists('v:this_session') && v:this_session != ''
-            let s:obsession_string = v:this_session
-            let s:obsession_parts = split(s:obsession_string, '/')
-            let s:obsession_filename = s:obsession_parts[-1]
-            let s .= ' ' . s:obsession_filename . ' '
-            let s .= '%*' " Restore default color
+if !exists("*MyTabLine")
+    " Our custom TabLine function
+    function MyTabLine()
+      let s = ''
+      for i in range(tabpagenr('$'))
+        " select the highlighting
+        if i + 1 == tabpagenr()
+          let s .= '%#TabLineSel#'
+        else
+          let s .= '%#TabLine#'
         endif
-    endif
 
-  return s
-endfunction
+        " set the tab page number (for mouse clicks)
+        let s .= '%' . (i + 1) . 'T'
 
-" Required for MyTabLine()
-function MyTabLabel(n)
-  let buflist = tabpagebuflist(a:n)
-  let winnr = tabpagewinnr(a:n)
-  return bufname(buflist[winnr - 1])
-endfunction
+        " the label is made by MyTabLabel()
+        let s .= ' %{MyTabLabel(' . (i + 1) . ')} '
+      endfor
+
+      " after the last tab fill with TabLineFill and reset tab page nr
+      let s .= '%#TabLineFill#%T'
+
+        let s .= '%=' " Right-align after this
+
+        if exists('g:this_obsession')
+            let s .= '%#diffadd#' " Use the "DiffAdd" color if in a session
+        endif
+
+        " add vim-obsession status if available
+        if exists(':Obsession')
+            let s .= "%{ObsessionStatus()}"
+            if exists('v:this_session') && v:this_session != ''
+                let s:obsession_string = v:this_session
+                let s:obsession_parts = split(s:obsession_string, '/')
+                let s:obsession_filename = s:obsession_parts[-1]
+                let s .= ' ' . s:obsession_filename . ' '
+                let s .= '%*' " Restore default color
+            endif
+        endif
+
+      return s
+    endfunction
+
+    " Required for MyTabLine()
+    function MyTabLabel(n)
+      let buflist = tabpagebuflist(a:n)
+      let winnr = tabpagewinnr(a:n)
+      return bufname(buflist[winnr - 1])
+    endfunction
+endif
 
 
 " Stuff for making NERDTree behave nicer
@@ -188,28 +189,32 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
 let g:SuperTabCrMapping = 1
 
-" Enable completion where available.
-let g:ale_completion_enabled = 1
-
 " ctrlp.vim basic settings
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 
 call plug#begin('~/.vim/plugged')
+Plug 'cocopon/iceberg.vim'
 Plug 'preservim/nerdcommenter'
 Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
 Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-rhubarb'
 Plug 'ervandew/supertab'
-Plug 'dense-analysis/ale'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'mbbill/undotree'
 Plug 'wincent/ferret'
 Plug 'davidhalter/jedi-vim'
 Plug 'vim-scripts/AutoComplPop'
+Plug 'airblade/vim-gitgutter'
+Plug 'yggdroot/indentline'
 call plug#end()
+
+colorscheme iceberg
+set background=dark
 
 " undotree mappings
 nnoremap <F5> :UndotreeToggle<CR>
@@ -218,27 +223,37 @@ nnoremap <F5> :UndotreeToggle<CR>
 nnoremap <Leader>m :NERDTreeToggle<CR>
 nnoremap <Leader>f :NERDTreeFind<CR>
 
+" Folding
+set foldmethod=indent
+set foldnestmax=2
+" Start unfolded
+set foldlevel=99
+nnoremap <space> za
+vnoremap <space> zf
 
-" Linting
 
-" When writing a buffer (no delay).
-"call neomake#configure#automake('w')
-" When writing a buffer (no delay), and on normal mode changes (after 750ms).
-"call neomake#configure#automake('nw', 750)
-" When reading a buffer (after 1s), and when writing (no delay).
-"call neomake#configure#automake('rw', 1000)
-" Full config: when writing or reading a buffer, and on changes in insert and
-" normal mode (after 500ms; no delay when writing).
-"call neomake#configure#automake('nrwi', 500)
+" because Windows Terminal is silly
+" https://github.com/microsoft/terminal/issues/4335#issuecomment-753397798
+if &term =~ '^xterm'
+	" Cursor in terminal:
+	" Link: https://vim.fandom.com/wiki/Configuring_the_cursor
+	" 0 -> blinking block not working in wsl
+	" 1 -> blinking block
+	" 2 -> solid block
+	" 3 -> blinking underscore
+	" 4 -> solid underscore
+	" Recent versions of xterm (282 or above) also support
+	" 5 -> blinking vertical bar
+	" 6 -> solid vertical bar
 
-" which linter to enable for Python source file linting
-"let g:neomake_python_pylint_maker = {
-  "\ 'args': [
-  "\ '-d', 'C0103, C0111',
-  "\ '-f', 'text',
-  "\ '--msg-template="{path}:{line}:{column}:{C}: [{symbol}] {msg}"',
-  "\ '-r', 'n'
-  "\ ],
-  "\ }
+	" normal mode
+	let &t_EI .= "\e[1 q" 	
+	" insert mode
+	let &t_SI .= "\e[5 q"	
 
-"let g:neomake_python_enabled_makers = ['pylint']
+	augroup windows_term
+		autocmd!
+		autocmd VimEnter * silent !echo -ne "\e[1 q" 
+		autocmd VimLeave * silent !echo -ne "\e[5 q" 
+	augroup END
+endif
