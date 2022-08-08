@@ -49,4 +49,7 @@ unset __conda_setup
 # load rust
 source /mnt/cfs/home/krisgrg/.cargo/env
 
+# z(oxide)
+eval "$(zoxide init zsh)"
+
 cd ~
