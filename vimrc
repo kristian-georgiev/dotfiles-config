@@ -93,6 +93,9 @@ nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
 nnoremap <leader>h :wincmd h<CR>
 
+" fzf
+nnoremap <C-p> :GFiles<Cr>
+
 " Map easy split resizing
 map - <C-W>-
 map + <C-W>+
@@ -189,10 +192,6 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
 let g:SuperTabCrMapping = 1
 
-" ctrlp.vim basic settings
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-
 call plug#begin('~/.vim/plugged')
 Plug 'cocopon/iceberg.vim'
 Plug 'preservim/nerdcommenter'
@@ -204,13 +203,14 @@ Plug 'junegunn/gv.vim'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-rhubarb'
 Plug 'ervandew/supertab'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'mbbill/undotree'
 Plug 'wincent/ferret'
 Plug 'davidhalter/jedi-vim'
 Plug 'vim-scripts/AutoComplPop'
 Plug 'airblade/vim-gitgutter'
 Plug 'yggdroot/indentline'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 colorscheme iceberg
@@ -257,3 +257,5 @@ if &term =~ '^xterm'
 		autocmd VimLeave * silent !echo -ne "\e[5 q" 
 	augroup END
 endif
+
+set complete-=i

@@ -1,13 +1,13 @@
 echo "Hi from /mnt/cfs/home/krisgrg/.zshrc"
+if [ -f ~/.zshrc_mslurm ]; then
+    source ~/.zshrc_mslurm
+fi
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-if [ -f ~/.zshrc_mslurm ]; then
-    source ~/.zshrc_mslurm
 fi
 
 # If you come from bash you might have to change your $PATH.
@@ -50,6 +50,8 @@ plugins=(git
          zsh-syntax-highlighting
          zsh-autosuggestions
          zoxide
+         vi-mode
+         lol
          )
 
 source $ZSH/oh-my-zsh.sh
@@ -57,10 +59,13 @@ source $ZSH/oh-my-zsh.sh
 # Set personal aliases, for a full list of active aliases, run `alias`.
 alias gs="git status"
 alias gl="git log --all --graph --decorate"
+alias tf="tail -f"
 alias py="python"
 alias pytohn="python"
 alias ypthon="python"
 alias yptohn="python"
+alias ta="tmux attach"
+alias tl="tmux ls"
 
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -95,4 +100,7 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_OPS="--extended"
+export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
+
+# load rust
+source /mnt/cfs/home/krisgrg/.cargo/env
