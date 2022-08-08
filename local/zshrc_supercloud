@@ -12,9 +12,11 @@ preexec() {
 precmd
 preexec
 
-alias lls="LLstat"
 alias llk="LLkill"
 alias lli="LLsub -i -s 40 -g volta:1"
+alias lst='LLstat'
+alias lf='LLfree'
+
 function ta {
     tmux a -t "$1"
     }
@@ -46,4 +48,3 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-
