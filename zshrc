@@ -44,6 +44,7 @@ source $ZSH/oh-my-zsh.sh
 # Set personal aliases, for a full list of active aliases, run `alias`.
 alias gs="git status"
 alias gl="git log --all --graph --decorate"
+alias gds="git diff --staged"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -70,3 +71,22 @@ fi
 if [ -f ~/.zshrc_thinkpad ]; then
     source ~/.zshrc_thinkpad
 fi
+
+# source latest environment module
+source /usr/share/modules/init/zsh
+module load anaconda/2021a
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/state/partition1/llgrid/pkg/anaconda/anaconda3-2021a/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/state/partition1/llgrid/pkg/anaconda/anaconda3-2021a/etc/profile.d/conda.sh" ]; then
+        . "/state/partition1/llgrid/pkg/anaconda/anaconda3-2021a/etc/profile.d/conda.sh"
+    else
+        export PATH="/state/partition1/llgrid/pkg/anaconda/anaconda3-2021a/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
