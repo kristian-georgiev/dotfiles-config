@@ -112,6 +112,7 @@ set softtabstop=4
 set autoindent          
 set smartindent        
 
+set splitright
 set splitbelow
 
 " saving and loading sessions
@@ -191,9 +192,6 @@ let g:SuperTabCrMapping = 1
 " Enable completion where available.
 let g:ale_completion_enabled = 1
 
-" nicer linter message
-let g:ale_echo_msg_format = '%linter% says %s'
-
 " ctrlp.vim basic settings
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
@@ -209,17 +207,16 @@ Plug 'junegunn/gv.vim'
 Plug 'tpope/vim-obsession'
 Plug 'ervandew/supertab'
 Plug 'dense-analysis/ale'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'mbbill/undotree'
 Plug 'wincent/ferret'
 Plug 'davidhalter/jedi-vim'
-Plug 'vim-scripts/AutoComplPop'
 Plug 'airblade/vim-gitgutter'
 Plug 'yggdroot/indentline'
 call plug#end()
 
 colorscheme iceberg
-set background=dark
+"set background=dark
+set background=light
 
 " undotree mappings
 nnoremap <F5> :UndotreeToggle<CR>
@@ -236,6 +233,12 @@ set foldlevel=99
 nnoremap <space> za
 vnoremap <space> zf
 
+cnoreabbrev W w
+cnoreabbrev Wq wq
+cnoreabbrev gs G status
+cnoreabbrev gl G lol
+cnoreabbrev gd G diff
+cnoreabbrev gds G diff --staged
 
 " because Windows Terminal is silly
 " https://github.com/microsoft/terminal/issues/4335#issuecomment-753397798
