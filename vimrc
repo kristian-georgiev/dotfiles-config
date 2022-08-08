@@ -214,8 +214,8 @@ Plug 'junegunn/fzf.vim'
 call plug#end()
 
 colorscheme iceberg
-"set background=dark
-set background=light
+set background=dark
+"set background=light
 
 " undotree mappings
 nnoremap <F5> :UndotreeToggle<CR>
@@ -235,7 +235,7 @@ vnoremap <space> zf
 cnoreabbrev W w
 cnoreabbrev Wq wq
 cnoreabbrev gs G status
-cnoreabbrev gl G lol
+cnoreabbrev gl GV
 cnoreabbrev gd G diff
 cnoreabbrev gds G diff --staged
 
