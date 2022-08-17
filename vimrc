@@ -99,6 +99,8 @@ nnoremap <C-p> :GFiles<Cr>
 " Map easy split resizing
 map - <C-W>-
 map + <C-W>+
+cnoreabbrev rs resize
+cnoreabbrev vrs vertical resize
 
 nmap j gj
 nmap k gk
@@ -181,11 +183,12 @@ if !exists("*MyTabLine")
 endif
 
 
-" Stuff for making NERDTree behave nicer
 set encoding=UTF-8
-au VimEnter *  NERDTree
-autocmd VimEnter * wincmd p
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" Start NERDTree and leave the cursor in it.
+autocmd VimEnter * NERDTree
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
 
 " make SuperTab nicer
@@ -196,18 +199,19 @@ let g:SuperTabCrMapping = 1
 call plug#begin('~/.vim/plugged')
 Plug 'cocopon/iceberg.vim'  " color theme
 Plug 'itchyny/lightline.vim'  " status line
-Plug 'preservim/nerdcommenter'
-Plug 'scrooloose/nerdtree'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'preservim/nerdcommenter'  " only use <leader> c <leader> for toggling comments
+Plug 'scrooloose/nerdtree'  " file tree
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'  "  file tree colors
+Plug 'Xuyuanp/nerdtree-git-plugin'  " git status in file tree
 Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
+Plug 'junegunn/gv.vim'  " :GV opens commit browser, look at diffs upon Enter
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-rhubarb'
 Plug 'ervandew/supertab'
 Plug 'mbbill/undotree'
 Plug 'wincent/ferret'
 Plug 'davidhalter/jedi-vim'
-Plug 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'  " shows git status of lines in 'gutter' (margin)
 Plug 'yggdroot/indentline'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -228,6 +232,15 @@ nmap ghp <Plug>(GitGutterPreviewHunk)
 nmap ghn <Plug>(GitGutterNextHunk)
 nmap ghN <Plug>(GitGutterPrevHunk)
 
+cnoreabbrev gs G status
+cnoreabbrev gc G commit
+cnoreabbrev gl GV
+cnoreabbrev gd G diff
+cnoreabbrev gds G diff --staged
+cnoreabbrev gdf Gdiffsplit
+
+cnoreabbrev W w
+cnoreabbrev Wq wq
 
 nnoremap <Leader>m :NERDTreeToggle<CR>
 nnoremap <Leader>f :NERDTreeFind<CR>
@@ -240,12 +253,6 @@ set foldlevel=99
 nnoremap <space> za
 vnoremap <space> zf
 
-cnoreabbrev W w
-cnoreabbrev Wq wq
-cnoreabbrev gs G status
-cnoreabbrev gl GV
-cnoreabbrev gd G diff
-cnoreabbrev gds G diff --staged
 
 " because Windows Terminal is silly
 " https://github.com/microsoft/terminal/issues/4335#issuecomment-753397798
