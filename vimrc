@@ -194,9 +194,9 @@ let g:SuperTabContextDefaultCompletionType = "<c-n>"
 let g:SuperTabCrMapping = 1
 
 call plug#begin('~/.vim/plugged')
-Plug 'cocopon/iceberg.vim'
+Plug 'cocopon/iceberg.vim'  " color theme
+Plug 'itchyny/lightline.vim'  " status line
 Plug 'preservim/nerdcommenter'
-Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-fugitive'
@@ -219,6 +219,14 @@ set background=dark
 
 " undotree mappings
 nnoremap <F5> :UndotreeToggle<CR>
+
+
+" gitgutter
+nmap ghs <Plug>(GitGutterStageHunk)
+nmap ghu <Plug>(GitGutterUndoHunk)
+nmap ghp <Plug>(GitGutterPreviewHunk)
+nmap ghn <Plug>(GitGutterNextHunk)
+nmap ghN <Plug>(GitGutterPrevHunk)
 
 
 nnoremap <Leader>m :NERDTreeToggle<CR>
@@ -264,5 +272,25 @@ if &term =~ '^xterm'
 		autocmd VimLeave * silent !echo -ne "\e[5 q" 
 	augroup END
 endif
+
+" lightline settings
+set noshowmode
+let g:lightline = {
+      \ 'colorscheme': 'powerlineish',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead'
+      \ },
+      \ }
+augroup NERD
+    au!
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+    autocmd VimEnter * wincmd p
+    autocmd VimEnter * call lightline#update()
+augroup END
 
 set complete-=i
