@@ -220,7 +220,6 @@ set background=dark
 " undotree mappings
 nnoremap <F5> :UndotreeToggle<CR>
 
-
 nnoremap <Leader>m :NERDTreeToggle<CR>
 nnoremap <Leader>f :NERDTreeFind<CR>
 
