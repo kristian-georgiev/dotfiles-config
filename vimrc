@@ -93,9 +93,14 @@ nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
 nnoremap <leader>h :wincmd h<CR>
 
+" fzf
+nnoremap <C-p> :GFiles<Cr>
+
 " Map easy split resizing
 map - <C-W>-
 map + <C-W>+
+cnoreabbrev rs resize
+cnoreabbrev vrs vertical resize
 
 nmap j gj
 nmap k gk
@@ -113,6 +118,7 @@ set softtabstop=4
 set autoindent          
 set smartindent        
 
+set splitright
 set splitbelow
 
 " saving and loading sessions
@@ -177,11 +183,12 @@ if !exists("*MyTabLine")
 endif
 
 
-" Stuff for making NERDTree behave nicer
 set encoding=UTF-8
-au VimEnter *  NERDTree
-autocmd VimEnter * wincmd p
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" Start NERDTree and leave the cursor in it.
+autocmd VimEnter * NERDTree
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
 
 " make SuperTab nicer
@@ -189,36 +196,47 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
 let g:SuperTabCrMapping = 1
 
-" ctrlp.vim basic settings
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-
 call plug#begin('~/.vim/plugged')
-Plug 'cocopon/iceberg.vim'
-Plug 'preservim/nerdcommenter'
-Plug 'itchyny/lightline.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
-Plug 'tpope/vim-obsession'
-Plug 'tpope/vim-rhubarb'
-Plug 'ervandew/supertab'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'mbbill/undotree'
-Plug 'wincent/ferret'
-Plug 'davidhalter/jedi-vim'
-Plug 'vim-scripts/AutoComplPop'
-Plug 'airblade/vim-gitgutter'
-Plug 'yggdroot/indentline'
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'cocopon/iceberg.vim'  " color theme
+Plug 'itchyny/lightline.vim'  " status line
+Plug 'preservim/nerdcommenter'  " only use <leader> c <leader> for toggling comments
+Plug 'scrooloose/nerdtree'  " file tree
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'  "  file tree colors
+Plug 'Xuyuanp/nerdtree-git-plugin'  " git status in file tree
+Plug 'tpope/vim-fugitive'  " git integration
+Plug 'junegunn/gv.vim'  " :GV opens commit browser, look at diffs upon Enter
+Plug 'tpope/vim-obsession'  " automatically tracks session with :Obsess
+Plug 'ervandew/supertab'  " start autocomplete with tab
+Plug 'airblade/vim-gitgutter'  " shows git status of lines in 'gutter' (margin)
+Plug 'yggdroot/indentline'  " makes vertical lines that indicate indent levels
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }  " fuzzy search
+Plug 'junegunn/fzf.vim'  " fuzzy search
 call plug#end()
 
 colorscheme iceberg
 set background=dark
+"set background=light
 
 " undotree mappings
 nnoremap <F5> :UndotreeToggle<CR>
+
+
+" gitgutter
+nmap ghs <Plug>(GitGutterStageHunk)
+nmap ghu <Plug>(GitGutterUndoHunk)
+nmap ghp <Plug>(GitGutterPreviewHunk)
+nmap ghn <Plug>(GitGutterNextHunk)
+nmap ghN <Plug>(GitGutterPrevHunk)
+
+cnoreabbrev gs G status
+cnoreabbrev gc G commit
+cnoreabbrev gl GV
+cnoreabbrev gd G diff
+cnoreabbrev gds G diff --staged
+cnoreabbrev gdf Gdiffsplit
+
+cnoreabbrev W w
+cnoreabbrev Wq wq
 
 nnoremap <Leader>m :NERDTreeToggle<CR>
 nnoremap <Leader>f :NERDTreeFind<CR>
@@ -257,3 +275,25 @@ if &term =~ '^xterm'
 		autocmd VimLeave * silent !echo -ne "\e[5 q" 
 	augroup END
 endif
+
+" lightline settings
+set noshowmode
+let g:lightline = {
+      \ 'colorscheme': 'powerlineish',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead'
+      \ },
+      \ }
+augroup NERD
+    au!
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+    autocmd VimEnter * wincmd p
+    autocmd VimEnter * call lightline#update()
+augroup END
+
+set complete-=i
