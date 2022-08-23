@@ -203,18 +203,14 @@ Plug 'preservim/nerdcommenter'  " only use <leader> c <leader> for toggling comm
 Plug 'scrooloose/nerdtree'  " file tree
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'  "  file tree colors
 Plug 'Xuyuanp/nerdtree-git-plugin'  " git status in file tree
-Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'  " git integration
 Plug 'junegunn/gv.vim'  " :GV opens commit browser, look at diffs upon Enter
-Plug 'tpope/vim-obsession'
-Plug 'tpope/vim-rhubarb'
-Plug 'ervandew/supertab'
-Plug 'mbbill/undotree'
-Plug 'wincent/ferret'
-Plug 'davidhalter/jedi-vim'
+Plug 'tpope/vim-obsession'  " automatically tracks session with :Obsess
+Plug 'ervandew/supertab'  " start autocomplete with tab
 Plug 'airblade/vim-gitgutter'  " shows git status of lines in 'gutter' (margin)
-Plug 'yggdroot/indentline'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+Plug 'yggdroot/indentline'  " makes vertical lines that indicate indent levels
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }  " fuzzy search
+Plug 'junegunn/fzf.vim'  " fuzzy search
 call plug#end()
 
 colorscheme iceberg
