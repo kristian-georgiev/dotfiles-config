@@ -211,6 +211,7 @@ Plug 'davidhalter/jedi-vim'
 Plug 'vim-scripts/AutoComplPop'
 Plug 'airblade/vim-gitgutter'
 Plug 'yggdroot/indentline'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 call plug#end()
 
 colorscheme iceberg
